@@ -1,13 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {
   StatusBar,
-  Text,
-  View,
-  Image,
   RefreshControl,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './Styles';
@@ -17,19 +13,27 @@ import {
   FileTypeEnum,
   FileInfo,
 } from 'theta-client-react-native';
+// import card modules from React-Native-Paper
+import { Avatar, Button, Card, Text as Tex } from 'react-native-paper';
+import SkeletonCardLoader from './SkeletonCardLoader';
 
 const listPhotos = async () => {
   const {fileList} = await listFiles(FileTypeEnum.IMAGE, 0, 1000);
   return fileList;
 };
 
+const LeftContent = props => <Avatar.Icon {...props} icon="camera" size={40}/>
+
 const ListPhotos = ({navigation}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [files, setFiles] = useState<FileInfo[]>([]);
 
   const onRefresh = useCallback(async () => {
+    // setLoading(true)
     setRefreshing(true);
     setFiles(await listPhotos());
+    // setLoading(false);
     setRefreshing(false);
   }, []);
 
@@ -48,29 +52,35 @@ const ListPhotos = ({navigation}) => {
 
   const items = files.map(item => (
     <TouchableOpacity
-      style={styles.fileItemBase}
+      style={styles.cardWrapper}
       key={item.name}
-      onPress={() => onSelect(item)}>
-      <Image style={styles.thumbnail} source={{uri: item.thumbnailUrl}} />
-      <View
-        style={{
-          width: Dimensions.get('window').width - 108,
-        }}>
-        <View style={styles.largeSpacer} />
-        <Text style={styles.fileName}>{item.name}</Text>
-        <View style={styles.largeSpacer} />
-      </View>
+    >
+      <Card style={{ padding: 10}}>
+        <Card.Title title="Testing" subtitle={item.dateTimeZone} left={LeftContent} />
+        <Card.Content>
+          <Tex variant="titleLarge">{item.name}</Tex>
+          <Tex variant="bodyMedium">{item?.imageDescription || 'Simple Image'}</Tex>
+        </Card.Content>
+        <Card.Cover source={{ uri: item.thumbnailUrl }} />
+        <Card.Actions>
+          <Button onPress={() => onSelect(item)}>View</Button>
+        </Card.Actions>
+      </Card>
     </TouchableOpacity>
-  ));
+));
+
 
   return (
-    <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
+    <SafeAreaView style={styles.listContainer} edges={['left', 'right', 'bottom']}>
       <StatusBar barStyle="light-content" />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        {items}
+        } contentContainerStyle={styles.scrollViewContent}>
+        
+        {
+          refreshing ? (<SkeletonCardLoader/>) : (items)
+        }
       </ScrollView>
     </SafeAreaView>
   );

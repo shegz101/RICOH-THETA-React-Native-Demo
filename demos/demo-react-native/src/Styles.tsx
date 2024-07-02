@@ -3,9 +3,30 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 100,
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  // listContainer: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: 'white',
+  // },
+  listContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  scrollViewContent: {
+    alignItems: 'center',
+  },
+  cardWrapper: {
+    width: '95%',
+    marginVertical: 10,
+  },
+  card: {
+    padding: 10,
   },
   thumbnail: {
     width: 100,
@@ -17,7 +38,8 @@ const styles = StyleSheet.create({
   fileItemBase: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 4,
+    marginTop: 5,
+    marginBottom: 10
   },
   fileName: {
     marginLeft: 4,
@@ -52,6 +74,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  buttonWrapper: {
+    marginTop: 20,
+    flexDirection: 'row',
+    gap:15,
+  },
   takePhoto: {
     width: '100%',
     height: '100%',
@@ -69,6 +96,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     zIndex: 1,
     elevation: 1,
+  },
+  tooltipContainer: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
   },
 });
 

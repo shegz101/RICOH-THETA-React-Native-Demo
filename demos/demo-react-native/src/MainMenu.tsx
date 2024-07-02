@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   AppState,
   AppStateStatus,
+  Linking,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './Styles';
 import {initialize} from 'theta-client-react-native';
+import { Tooltip } from "react-native-paper";
+import { Cam } from '../assets';
 
 const MainMenu = ({navigation}) => {
   const goTake = () => {
@@ -20,7 +23,7 @@ const MainMenu = ({navigation}) => {
   };
 
   const initTheta = async () => {
-    const endpoint = 'http://192.168.1.1';
+    const endpoint = 'https://fake-theta.vercel.app';
     const config = {
       // clientMode: { // Client mode authentication settings
       //   username: 'THETAXX12345678',
@@ -37,6 +40,12 @@ const MainMenu = ({navigation}) => {
     }
   };
 
+  // Helper function for link opening
+  const openLink = (url: string): void => {
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+  };
+
+
   React.useEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
@@ -51,13 +60,31 @@ const MainMenu = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <TouchableOpacity style={styles.buttonBack} onPress={goTake}>
-        <Text style={styles.button}>Take a Photo</Text>
+
+      <TouchableOpacity onPress={() => openLink('https://github.com/ricohapi/theta-client')}>
+        <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>RICOH THETA</Text>
       </TouchableOpacity>
-      <View style={styles.spacer} />
-      <TouchableOpacity style={styles.buttonBack} onPress={goList}>
-        <Text style={styles.button}>List Photos</Text>
-      </TouchableOpacity>
+
+      <Cam width={350} height={350}/>
+
+      <View style={styles.buttonWrapper}>
+        <Tooltip title="This button triggers the take photo component" 
+          enterTouchDelay={200} leaveTouchDelay={200}>
+          <TouchableOpacity style={styles.buttonBack} onPress={goTake}>
+            <Text style={styles.button}>Take a Photo</Text>
+          </TouchableOpacity>
+        </Tooltip>
+        
+        <View style={styles.spacer} />
+
+        <Tooltip title="This button lists the current photos" 
+          enterTouchDelay={200} leaveTouchDelay={200}>
+          <TouchableOpacity style={styles.buttonBack} onPress={goList}>
+            <Text style={styles.button}>List Photos</Text>
+          </TouchableOpacity>
+        </Tooltip>
+      </View>
+
     </SafeAreaView>
   );
 };
