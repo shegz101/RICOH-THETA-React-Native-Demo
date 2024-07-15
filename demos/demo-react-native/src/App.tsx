@@ -6,6 +6,7 @@ import MainMenu from './MainMenu';
 import TakePhoto from './TakePhoto';
 import ListPhotos from './ListPhotos';
 import PhotoSphere from './PhotoSphere';
+import DataCenter from './DataCenter';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,11 @@ const App = () => {
             options={{title: 'Sphere'}}
             name="sphere"
             component={PhotoSphere}
+          />
+           <Stack.Screen
+            options={{ title: 'Data Center' }}
+            name="dataCenter"
+            component={DataCenter}
           />
         </Stack.Navigator>
       </NavigationContainer>
